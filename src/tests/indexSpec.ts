@@ -1,7 +1,16 @@
-import { sumTwo } from '../index';
+/**
+ * Imports
+ */
+import request from 'supertest';
+import app from '../app';
 
-describe('Test specs', function () {
-  it('the sum of 5 + 5 return 10', function () {
-    expect(sumTwo(5, 5)).toBe(10);
+
+/**
+ * @description Testing the server
+ */
+describe('Test our web server', () => {
+  it('returns a status code of 200 upon doing GET request', async () => {
+    const res = await request(app).get("/api/images")
+    expect(res.status).toBe(200);
   });
 });
