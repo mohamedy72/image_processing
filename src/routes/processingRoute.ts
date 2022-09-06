@@ -1,9 +1,10 @@
 import express from 'express';
+import processImage from '../controllers/processController';
 
 
-const processImage = express.Router()
+const processRouter = express.Router()
 
 
-processImage.route("/").get(processImage)
+processRouter.route("/").get(processImage)
 
-export default processImage
+export default processRouter
