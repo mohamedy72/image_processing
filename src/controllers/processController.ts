@@ -1,16 +1,18 @@
-import { NextFunction, Request, Response } from 'express';
-import resizeImage from '../../utils/resizeImage';
+import { Request, Response } from 'express';
 
+import resizeImage from '../utils/resizeImage';
 
-
-
-async function processImage(req: Request, res: Response, next: NextFunction) {
+function processImage(req: Request, res: Response) {
     const { filename, width, height } = req.query;
     if (!filename || !width || !height) {
-        return res.status(404).send("Please enter a valid values")
+        res
+            .status(404)
+            .send(
+                `<h1 class="Error">Missing URL queries, Please check if you passed a Filename - Width and height!</h1>`
+            );
+    } else {
+        resizeImage(filename as string, +width, +height, req, res);
     }
-    resizeImage(filename as string, +width, +height)
-    next()
 }
 
 export default processImage;
