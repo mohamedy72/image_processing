@@ -1,5 +1,4 @@
 import { Request, Response } from 'express';
-
 import resizeImage from '../utils/resizeImage';
 
 function processImage(req: Request, res: Response) {
