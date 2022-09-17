@@ -6,7 +6,7 @@ import mainRouter from './routes/serverRoute';
 const app = express();
 
 // app.use(express.static(path.resolve('./public/imgs')))
-app.disable('etag')
+app.disable('etag');
 app.use('/', mainRouter);
 app.use('/api/images', processRouter);
 
