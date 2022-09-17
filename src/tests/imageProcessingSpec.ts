@@ -1,6 +1,8 @@
 import request from 'supertest';
 import app from '../app';
 import resizeImage from '../utils/resizeImage';
+import fs from 'fs/promises';
+import path from 'path';
 
 /**
  * @description Testing img processing endpoint
@@ -20,18 +22,21 @@ describe('Test our image processing endpoint', () => {
 });
 
 describe('Testing the resizing functionality', () => {
-  it("makes sure file does exist", async () => {
-    const response = await resizeImage("fjord.jpg", 200, 200)
-    expect(response).not.toBeNull()
-  })
+  it('generates a new resized image and file is wrote to resized folder', async () => {
+    await resizeImage('icelandwaterfall.jpg', 200, 200);
+    const pathToEditedImg = `${path.resolve(
+      './'
+    )}/public/imgs/resized/icelandwaterfall-200-200.jpg`;
 
-  it('throws an error when user enters non-jpg file', async () => {
-    let err = 'We only process JPG Files.';
+    let errHasOcurred: string | null;
+
     try {
-      await resizeImage('fjord.png', 200, 200);
-    } catch (error) {
-      err = error.message;
+      await fs.access(pathToEditedImg);
+      errHasOcurred = null;
+    } catch (err) {
+      errHasOcurred = err;
     }
-    expect(err).toBe('We only process JPG Files.');
+
+    expect(errHasOcurred).toBeNull();
   });
 });
