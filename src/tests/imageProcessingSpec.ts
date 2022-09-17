@@ -20,6 +20,11 @@ describe('Test our image processing endpoint', () => {
 });
 
 describe('Testing the resizing functionality', () => {
+  it("makes sure file does exist", async () => {
+    const response = await resizeImage("fjord.jpg", 200, 200)
+    expect(response).not.toBeNull()
+  })
+
   it('throws an error when user enters non-jpg file', async () => {
     let err = 'We only process JPG Files.';
     try {

@@ -8,13 +8,11 @@ async function resizeImage(
   width: number,
   height: number,
   res?: Response
-): Promise<void> {
+): Promise<string | void> {
   try {
     const imgName = `${filename.replace('.jpg', '')}-${width}-${height}.jpg`;
     const pathToFullImg = `${path.resolve('./')}/public/imgs/full/${filename}`;
-    const pathToEditedImg = `${path.resolve(
-      './'
-    )}/public/imgs/resized/${imgName}`;
+    const pathToEditedImg = `${path.resolve('./')}/public/imgs/resized/${imgName}`;
 
     const editedImgsDir = await fs.readdir(
       `${path.resolve('./')}/public/imgs/resized`
@@ -26,7 +24,7 @@ async function resizeImage(
 
     //  If image already exists in 'resized folder' just send it without re-processing
     if (editedImgsDir.includes(imgName)) {
-      res
+      return res
         ?.status(200)
         .header('Content-Type', 'image/jpg')
         .sendFile(pathToEditedImg);
@@ -34,7 +32,7 @@ async function resizeImage(
       await sharp(pathToFullImg)
         .resize(+width, +height)
         .toFile(pathToEditedImg);
-      res
+      return res
         ?.status(200)
         .header('Content-Type', 'image/jpg')
         .sendFile(pathToEditedImg);
